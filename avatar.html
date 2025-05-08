@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Escolha seu Estilo 🎭</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #7c4dff, #b388ff);
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+    }
+    .card {
+      background: #424242;
+      padding: 30px;
+      border-radius: 25px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      width: 90%;
+      max-width: 400px;
+    }
+    .avatars, .niveis {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin: 20px 0;
+    }
+    .option {
+      cursor: pointer;
+      background-color: #616161;
+      padding: 15px;
+      border-radius: 20px;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+    .option.selecionado {
+      background-color: #b388ff;
+      color: #2e2e2e;
+      font-weight: bold;
+    }
+    .option:hover {
+      background-color: #7c4dff;
+      transform: scale(1.05);
+    }
+    img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+    }
+    .botao {
+      background-color: #b388ff;
+      color: #2e2e2e;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 18px;
+      text-decoration: none;
+      display: inline-block;
+      transition: background-color 0.3s;
+    }
+    .botao:hover {
+      background-color: #d1c4e9;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="card">
+  <h1>🎭 Escolha seu Avatar</h1>
+
+  <div class="avatars">
+    <div class="option" id="avatar-feminino" onclick="selecionarAvatar('feminino')">
+      <img src="https://cdn-icons-png.flaticon.com/512/2922/2922561.png" alt="Avatar Feminino">
+      <div>Feminino</div>
+    </div>
+    <div class="option" id="avatar-masculino" onclick="selecionarAvatar('masculino')">
+      <img src="https://cdn-icons-png.flaticon.com/512/921/921087.png" alt="Avatar Masculino">
+      <div>Masculino</div>
+    </div>
+  </div>
+
+  <h2>📚 Escolha seu Nível</h2>
+
+  <div class="niveis">
+    <div class="option" id="nivel-iniciante" onclick="selecionarNivel('iniciante')">Iniciante</div>
+    <div class="option" id="nivel-focado" onclick="selecionarNivel('focado')">Focado</div>
+    <div class="option" id="nivel-mestre" onclick="selecionarNivel('mestre')">Mestre</div>
+  </div>
+
+  <button class="botao" onclick="salvarEscolhas()">Continuar ➡</button>
+</div>
+
+<script>
+let avatarSelecionado = null;
+let nivelSelecionado = null;
+
+function selecionarAvatar(avatar) {
+  avatarSelecionado = avatar;
+  // remover seleções anteriores
+  document.getElementById('avatar-feminino').classList.remove('selecionado');
+  document.getElementById('avatar-masculino').classList.remove('selecionado');
+  // adicionar seleção atual
+  document.getElementById('avatar-' + avatar).classList.add('selecionado');
+}
+
+function selecionarNivel(nivel) {
+  nivelSelecionado = nivel;
+  // remover seleções anteriores
+  document.getElementById('nivel-iniciante').classList.remove('selecionado');
+  document.getElementById('nivel-focado').classList.remove('selecionado');
+  document.getElementById('nivel-mestre').classList.remove('selecionado');
+  // adicionar seleção atual
+  document.getElementById('nivel-' + nivel).classList.add('selecionado');
+}
+
+function salvarEscolhas() {
+  if (!avatarSelecionado || !nivelSelecionado) {
+    alert('Por favor, escolha um avatar e um nível antes de continuar.');
+    return;
+  }
+  localStorage.setItem('avatar', avatarSelecionado);
+  localStorage.setItem('nivel', nivelSelecionado);
+  window.location.href ="teste2.html"; // redireciona para o chat
+}
+</script>
+
+</body>
+</html>

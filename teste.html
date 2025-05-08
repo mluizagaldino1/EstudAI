@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>EstudAI - Teste de Aprendizado</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(270deg, #7c4dff, #b388ff, #7c4dff);
+      background-size: 600% 600%;
+      animation: gradientAnimation 10s ease infinite;
+      margin: 0;
+      padding: 20px;
+      color: white;
+      text-align: center;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    @keyframes gradientAnimation {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+    .card {
+      background: #424242;
+      padding: 30px;
+      border-radius: 25px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      max-width: 700px;
+      width: 90%;
+      margin: auto;
+    }
+    .pergunta, .item {
+      background-color: #616161;
+      padding: 20px;
+      margin: 15px 0;
+      border-radius: 20px;
+      transition: background-color 0.3s, transform 0.3s;
+      cursor: pointer;
+    }
+    .pergunta:hover, .item:hover {
+      background-color: #7c4dff;
+      transform: scale(1.05);
+    }
+    .botao {
+      background-color: #b388ff;
+      color: #2e2e2e;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 18px;
+      text-decoration: none;
+      transition: background-color 0.3s, transform 0.3s;
+      display: inline-block;
+    }
+    .botao:hover {
+      background-color: #d1c4e9;
+      transform: scale(1.08);
+    }
+    .progresso {
+      width: 90%;
+      background: #616161;
+      height: 20px;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 20px;
+    }
+    .xp {
+      background: #b388ff;
+      height: 100%;
+      width: 0%;
+      transition: width 0.5s ease-in-out;
+    }
+    .medalhas {
+      margin-top: 20px;
+      font-size: 24px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card" id="conteudo">
+  <h1>EstudAI - Descubra seu jeito de aprender</h1>
+  <h2 id="perguntaTitulo">Pergunta 1 de 5</h2>
+
+  <div id="perguntaTexto" class="pergunta" onclick="responder('Visual')">Eu aprendo melhor vendo vídeos e imagens.</div>
+  <div id="opcao2" class="pergunta" onclick="responder('Auditivo')">Eu prefiro ouvir explicações em áudio.</div>
+  <div id="opcao3" class="pergunta" onclick="responder('Escrevendo')">Eu gosto de anotar e escrever para entender.</div>
+
+  <div class="progresso">
+    <div class="xp" id="barraXP"></div>
+  </div>
+</div>
+
+<script>
+  const perguntas = [
+    {
+      texto: "Quando estou estudando, gosto de assistir vídeos.",
+      opcoes: ["Visual", "Auditivo", "Escrevendo"]
+    },
+    {
+      texto: "Prefiro ouvir um podcast sobre o assunto.",
+      opcoes: ["Auditivo", "Visual", "Escrevendo"]
+    },
+    {
+      texto: "Entendo melhor quando escrevo o que aprendi.",
+      opcoes: ["Escrevendo", "Visual", "Auditivo"]
+    },
+    {
+      texto: "Gráficos e mapas me ajudam muito.",
+      opcoes: ["Visual", "Auditivo", "Escrevendo"]
+    },
+    {
+      texto: "Falar sobre o assunto em voz alta me faz lembrar melhor.",
+      opcoes: ["Auditivo", "Escrevendo", "Visual"]
+    }
+  ];
+
+  let indice = 0;
+  const respostas = { Visual: 0, Auditivo: 0, Escrevendo: 0 };
+  let xp = 0;
+
+  function responder(estilo) {
+    respostas[estilo]++;
+    xp += 20;
+    atualizarXP();
+    indice++;
+
+    if (indice < perguntas.length) {
+      mostrarPergunta();
+    } else {
+      mostrarTrilha();
+    }
+  }
+
+  function mostrarPergunta() {
+    document.getElementById("perguntaTitulo").innerText = `Pergunta ${indice + 1} de 5`;
+    document.getElementById("perguntaTexto").innerText = perguntas[indice].texto;
+    document.getElementById("perguntaTexto").setAttribute("onclick", `responder('${perguntas[indice].opcoes[0]}')`);
+    document.getElementById("opcao2").innerText = perguntas[indice].opcoes[1] === "Visual" ? "Eu gosto de ver imagens." : perguntas[indice].opcoes[1] === "Auditivo" ? "Prefiro ouvir áudios." : "Prefiro escrever enquanto estudo.";
+    document.getElementById("opcao2").setAttribute("onclick", `responder('${perguntas[indice].opcoes[1]}')`);
+    document.getElementById("opcao3").innerText = perguntas[indice].opcoes[2] === "Visual" ? "Aprendo com vídeos." : perguntas[indice].opcoes[2] === "Auditivo" ? "Prefiro escutar explicações." : "Entendo melhor anotando.";
+    document.getElementById("opcao3").setAttribute("onclick", `responder('${perguntas[indice].opcoes[2]}')`);
+  }
+
+  function atualizarXP() {
+    document.getElementById("barraXP").style.width = xp + "%";
+  }
+
+  function mostrarTrilha() {
+    const estilo = Object.keys(respostas).reduce((a, b) => respostas[a] > respostas[b] ? a : b);
+    localStorage.setItem('estiloAluno', estilo);
+
+    const medalha = estilo === "Visual" ? "🏅 Medalha Visual" : estilo === "Auditivo" ? "🏆 Medalha Auditiva" : "✏️ Medalha de Escrita";
+
+    const conteudo = document.getElementById('conteudo');
+    conteudo.innerHTML = `
+      <h2>Você é melhor aprendendo: <strong>${estilo}</strong></h2>
+      <div class="medalhas">${medalha}</div>
+
+      <p>Parabéns! Sua jornada de aprendizado vai ser ainda mais incrível!</p>
+
+      <a href="escolha.html" class="botao">Começar a Estudar!</a>
+    `;
+  }
+</script>
+
+</body>
+</html>

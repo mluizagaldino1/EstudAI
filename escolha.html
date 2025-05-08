@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>EstudAI - Escolha a Matéria</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #7c4dff, #b388ff);
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+    }
+    .materia-btn {
+      background-color: #b388ff;
+      color: #2e2e2e;
+      padding: 15px 30px;
+      margin: 10px;
+      border: none;
+      border-radius: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+    .materia-btn:hover {
+      background-color: #d1c4e9;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+
+<h1>EstudAI 📚✨</h1>
+<h2>Escolha uma matéria:</h2>
+
+<div>
+  <button class="materia-btn" onclick="escolherMateria('Matemática')">Matemática</button>
+  <button class="materia-btn" onclick="escolherMateria('Língua Portuguesa')">Língua Portuguesa</button>
+  <button class="materia-btn" onclick="escolherMateria('História')">História</button>
+  <button class="materia-btn" onclick="escolherMateria('Geografia')">Geografia</button>
+</div>
+
+<script>
+function escolherMateria(materia) {
+  sessionStorage.setItem('materiaEscolhida', materia);
+  window.location.href = 'teste2.html';
+}
+</script>
+
+</body>
+</html>

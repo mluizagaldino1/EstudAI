@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>EstudAI - Chat</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #7c4dff, #b388ff);
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+    }
+    .chat-box {
+      background: #424242;
+      padding: 20px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 500px;
+      height: 70%;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .input-area {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+    }
+    input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      border-radius: 20px;
+      border: none;
+      font-size: 16px;
+    }
+    button {
+      background-color: #b388ff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .message {
+      background-color: #616161;
+      padding: 10px;
+      border-radius: 15px;
+      margin: 5px 0;
+      max-width: 70%;
+      text-align: left;
+    }
+    .user {
+      align-self: flex-end;
+      background-color: #7c4dff;
+    }
+    .bot {
+      align-self: flex-start;
+      background-color: #b388ff;
+      color: #2e2e2e;
+    }
+  </style>
+</head>
+<body>
+
+<h1>EstudAI 📚✨</h1>
+
+<div class="chat-box" id="chatBox"></div>
+
+<div class="input-area">
+  <input type="text" id="userInput" placeholder="Digite sua pergunta...">
+  <button onclick="enviarMensagem()">Enviar</button>
+</div>
+
+<script>
+const materia = sessionStorage.getItem('materiaEscolhida') || 'Matéria não definida';
+
+function adicionarMensagem(texto, classe) {
+  const chatBox = document.getElementById('chatBox');
+  const msg = document.createElement('div');
+  msg.className = 'message ' + classe;
+  msg.innerText = texto;
+  chatBox.appendChild(msg);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+async function enviarMensagem() {
+  const input = document.getElementById('userInput');
+  const texto = input.value.trim();
+  if (texto === "") return;
+
+  adicionarMensagem(texto, 'user');
+  input.value = "";
+
+  adicionarMensagem("Pensando...", 'bot');
+
+  try {
+    const resposta = await fetch('chat.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ pergunta: texto, materia: materia })
+    });
+
+    const data = await resposta.json();
+    const mensagensBot = document.querySelectorAll('.bot');
+    mensagensBot[mensagensBot.length - 1].innerText = data.resposta;
+  } catch (error) {
+    const mensagensBot = document.querySelectorAll('.bot');
+    mensagensBot[mensagensBot.length - 1].innerText = "Erro ao se comunicar com a IA.";
+  }
+}
+</script>
+
+</body>
+</html>

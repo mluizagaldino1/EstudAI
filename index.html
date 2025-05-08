@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EstudAI - Plataforma de Estudos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #7c4dff, #b388ff);
+      color: white;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+    .container {
+      background: #424242;
+      padding: 30px;
+      border-radius: 25px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      width: 90%;
+      max-width: 400px;
+    }
+    input, select, button {
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      margin: 10px 0;
+      width: 100%;
+      font-size: 16px;
+    }
+    input[type="text"], input[type="email"] {
+      background-color: #303030;
+      color: white;
+    }
+    button {
+      background-color: #b388ff;
+      color: #2e2e2e;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #d1c4e9;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="loginContainer">
+    <h1>Bem-vindo ao EstudAI 📚</h1>
+    <input type="text" id="nome" placeholder="Digite seu nome" required>
+    <input type="email" id="email" placeholder="Digite seu email" required>
+    <button onclick="iniciarTutorial()">Fazer Login</button>
+  </div>
+
+  <div class="container" id="tutorialContainer" style="display:none;">
+    <h2>Olá, <span id="userName"></span>! 👋</h2>
+    <p>Vamos te mostrar como funciona o EstudAI. 😊</p>
+    <ul style="text-align: left;">
+      <li>🔍 Responda um teste rápido para identificarmos seu estilo de aprendizado.</li>
+      <li>📚 Escolha uma matéria para estudar com a IA.</li>
+      <li>🎯 Siga trilhas personalizadas com base no seu perfil.</li>
+      <li>🏆 Ganhe XP e veja seu progresso!</li>
+    </ul>
+    <button onclick="mostrarTeste()">Começar o Teste</button>
+  </div>
+
+  <div class="container" id="testeContainer" style="display:none;">
+    <h2>Teste de Estilo de Aprendizagem</h2>
+    <form id="testeForm">
+      <p>1. Você entende melhor quando...</p>
+      <select><option>Assiste a vídeos</option><option>Ouve alguém explicar</option><option>Lê um texto</option><option>Escreve com suas palavras</option></select>
+
+      <p>2. Durante uma aula, você prefere...</p>
+      <select><option>Ver imagens ou esquemas</option><option>Ouvir e prestar atenção</option><option>Ler os materiais</option><option>Anotar o conteúdo</option></select>
+
+      <p>3. Quando vai estudar sozinho, você...</p>
+      <select><option>Procura vídeos e tutoriais</option><option>Escuta podcasts ou áudios</option><option>Lê o conteúdo em livros</option><option>Reescreve o conteúdo</option></select>
+
+      <p>4. Para lembrar de algo importante, você...</p>
+      <select><option>Faz desenhos ou mapas mentais</option><option>Grava e escuta depois</option><option>Lê várias vezes</option><option>Escreve num caderno</option></select>
+
+      <p>5. Você sente que aprende mais quando...</p>
+      <select><option>Assiste alguém fazendo</option><option>Escuta explicações</option><option>Lê sozinho</option><option>Resume com suas palavras</option></select>
+
+      <button type="button" onclick="mostrarTrilhas()">Ver Trilhas de Estudo</button>
+    </form>
+  </div>
+
+  <div class="container" id="trilhasContainer" style="display:none;">
+    <h2>Trilhas de Estudo</h2>
+    <p>Escolha a matéria para começar:</p>
+    <button onclick="irParaChat('Matemática')">📐 Matemática</button>
+    <button onclick="irParaChat('Língua Portuguesa')">📖 Língua Portuguesa</button>
+    <button onclick="irParaChat('História')">📜 História</button>
+    <button onclick="irParaChat('Geografia')">🌍 Geografia</button>
+  </div>
+
+  <script>
+    let nomeUsuario = "";
+
+    function iniciarTutorial() {
+      const nome = document.getElementById('nome').value.trim();
+      const email = document.getElementById('email').value.trim();
+      if (!nome || !email) {
+        alert("Por favor, preencha seu nome e email para continuar.");
+        return;
+      }
+      nomeUsuario = nome;
+      document.getElementById("loginContainer").style.display = "none";
+      document.getElementById("userName").innerText = nome;
+      document.getElementById("tutorialContainer").style.display = "block";
+    }
+
+    function mostrarTeste() {
+      document.getElementById("tutorialContainer").style.display = "none";
+      document.getElementById("testeContainer").style.display = "block";
+    }
+
+    function mostrarTrilhas() {
+      document.getElementById("testeContainer").style.display = "none";
+      document.getElementById("trilhasContainer").style.display = "block";
+    }
+
+    function irParaChat(materia) {
+      window.location.href = `chat.php?materia=${encodeURIComponent(materia)}&usuario=${encodeURIComponent(nomeUsuario)}`;
+    }
+  </script>
+</body>
+</html>
